@@ -1,0 +1,130 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Vehicle {
+  id    String @id @default(cuid())
+  year  String
+  make  String
+  model String
+
+  Order Order[]
+  @@unique([year, make, model])
+}
+
+model Customer {
+  id      String @id @default(cuid())
+  name    String
+  address String
+  city    String
+  state   String
+  zipcode String
+  phone   String
+  email   String
+  notes   String
+
+  Order Order[]
+  @@unique([name, phone, email, address])
+}
+
+model Item {
+  itemnum  Int    @id @default(autoincrement())
+  fulldesc String
+  type     String
+
+  Tire      Tire[]
+  Service   Service[]
+  Rim       Rim[]
+  Part      Part[]
+  Package   Package[]
+  OrderItem OrderItem[]
+}
+
+model Tire {
+  itemnum     Int     @id
+  brand       String
+  model       String
+  size        String
+  servicedesc String
+  warranty    String
+  condition   String
+  price       Decimal @db.Money
+  quantity    Int
+
+  Item Item @relation(fields: [itemnum], references: [itemnum])
+}
+
+model Rim {
+  itemnum     Int     @id
+  brand       String
+  model       String
+  size        String
+  boltpattern String
+  finish      String
+  condition   String
+  price       Decimal @db.Money
+  quantity    String
+
+  Item Item @relation(fields: [itemnum], references: [itemnum])
+}
+
+model Part {
+  itemnum     Int     @id
+  description String
+  condition   String
+  price       Decimal @db.Money
+
+  Item Item @relation(fields: [itemnum], references: [itemnum])
+}
+
+model Service {
+  itemnum     Int     @id
+  description String
+  price       Decimal @db.Money
+
+  Item Item @relation(fields: [itemnum], references: [itemnum])
+}
+
+model Package {
+  itemnum     Int     @id
+  description String
+  price       Decimal @db.Money
+
+  Item Item @relation(fields: [itemnum], references: [itemnum])
+}
+
+model Order {
+  ordernum  Int      @id @default(autoincrement())
+  date      DateTime
+  cid       String
+  vid       String
+  odometer  Int
+  comments  String
+  subtotal  Decimal  @db.Money
+  tax       Decimal  @db.Money
+  total     Decimal  @db.Money
+  paymethod String
+
+  Customer  Customer    @relation(fields: [cid], references: [id])
+  Vehicle   Vehicle     @relation(fields: [vid], references: [id])
+  OrderItem OrderItem[]
+}
+
+model OrderItem {
+  id       String  @id @default(cuid())
+  ordernum Int
+  itemnum  Int
+  quantity Int
+  price    Decimal @db.Money
+
+  Order Order @relation(fields: [ordernum], references: [ordernum])
+  Item  Item  @relation(fields: [itemnum], references: [itemnum])
+}

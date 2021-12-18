@@ -10,13 +10,18 @@
     "test:affected": "nx affected --target test --parallel",
     "lint": "nx lint",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio"
   },
   "private": true,
   "dependencies": {
     "@nestjs/common": "^8.0.0",
     "@nestjs/core": "^8.0.0",
     "@nestjs/platform-express": "^8.0.0",
+    "@prisma/client": "^3.6.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.0.0",
     "tslib": "^2.0.0"
@@ -40,7 +45,11 @@
     "eslint-config-prettier": "8.1.0",
     "jest": "27.2.3",
     "prettier": "^2.3.1",
+    "prisma": "^3.6.0",
     "ts-jest": "27.0.5",
     "typescript": "~4.4.3"
+  },
+  "prisma": {
+    "schema": "libs/prisma-client/prisma/schema.prisma"
   }
 }
