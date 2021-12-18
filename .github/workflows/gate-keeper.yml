@@ -1,0 +1,31 @@
+name: Gate Keeper
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  lint_format_test:
+    name: Lint-Format-Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install Dependencies
+        run: |
+          npm install -g yarn
+          yarn install --frozen-lockfile
+      - name: Lint
+        run: yarn lint
+
+      - name: Format Check
+        run: yarn format:check
+
+      - name: Unit Tests
+        run: yarn test:all
+
+      - name: Clean Up
+        if: ${{ always() }}
+        run: npm uninstall -g yarn
