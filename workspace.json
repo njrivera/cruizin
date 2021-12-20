@@ -2,6 +2,8 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
-    "prisma-client": "libs/prisma-client"
+    "prisma-client": "libs/prisma-client",
+    "ui": "apps/ui",
+    "ui-e2e": "apps/ui-e2e"
   }
 }
