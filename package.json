@@ -76,5 +76,8 @@
   },
   "prisma": {
     "schema": "libs/prisma-client/prisma/schema.prisma"
+  },
+  "engines": {
+    "node": "^18.0.0"
   }
 }
